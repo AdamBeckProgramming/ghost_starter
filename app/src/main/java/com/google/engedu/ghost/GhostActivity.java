@@ -148,4 +148,19 @@ public class GhostActivity extends ActionBarActivity {
             }
         }
     }
+
+    public void onSavedInstanceState(Bundle savedInstanceState){
+        TextView text = (TextView) findViewById(R.id.ghostText);
+        savedInstanceState.putString("text", text.getText().toString());
+        savedInstanceState.putBoolean("User Turn", true);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        TextView textPart = (TextView) findViewById(R.id.ghostText);
+
+        super.onRestoreInstanceState(savedInstanceState);
+        textPart.setText(savedInstanceState.getString("text"));
+        Boolean turn = savedInstanceState.getBoolean("User Turn");
+    }
 }
