@@ -16,22 +16,25 @@ public class SimpleDictionary implements GhostDictionary {
         BufferedReader in = new BufferedReader(new InputStreamReader(wordListStream));
         words = new ArrayList<>();
         String line = null;
-        while((line = in.readLine()) != null) {
+        while ((line = in.readLine()) != null) {
             String word = line.trim();
             if (word.length() >= MIN_WORD_LENGTH)
-              words.add(line.trim());
+                words.add(line.trim());
         }
     }
 
+
     @Override
-    public boolean isWord(String word) { return words.contains(word); }
+    public boolean isWord(String word) {
+        return words.contains(word);
+    }
 
     @Override
     public String getAnyWordStartingWith(String prefix) {
         int beginning = 0;
         int ending = words.size()-1;
         Log.d("Get any word", prefix);
-        if((prefix.isEmpty()) || prefix == null || prefix == " " || prefix == ""){
+        if((prefix.isEmpty()) || prefix == " " || prefix == ""){
             Random rand = new Random();
             int randNum = rand.nextInt(words.size());
             Log.d("Get any word", words.get(randNum));
@@ -56,4 +59,5 @@ public class SimpleDictionary implements GhostDictionary {
     public String getGoodWordStartingWith(String prefix) {
         return null;
     }
+
 }

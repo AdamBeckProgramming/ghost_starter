@@ -29,7 +29,7 @@ public class GhostActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ghost);
-        onStart(null);
+        onStart();
 
         AssetManager assetManager = getAssets();
         try {
@@ -66,24 +66,22 @@ public class GhostActivity extends ActionBarActivity {
     private void computerTurn() {
         TextView label = (TextView) findViewById(R.id.gameStatus);
         TextView text = (TextView) findViewById(R.id.ghostText);
+        text.setText("");
         // Do computer turn stuff then make it the user's turn again
-        String s = " ";
+        String s = text.toString();
         int length = text.length();
         if(length > 4 && simDictionary.isWord(text.getText().toString())){
             label.setText("Comp wins");
         }else if(length == 0){
-            Log.d("ComputerTurn length 1", "Length 0");
+            Log.d("ComputerTurn length 1", s);
             text.setText("");
             Log.d("ComputerTurn text 1", text.toString());
-            // This causes the breakage whenever computer starts first for some reason
-            // "Null pointer" error
             s = simDictionary.getAnyWordStartingWith("");
             Log.d("ComputerTurn s", s);
             text.append(s);
             Log.d("ComputerTurn", text.toString());
 
-        }
-        else{
+       }else{
             s = simDictionary.getAnyWordStartingWith(text.getText().toString());
             if(s == null){
                 label.setText("Computer Challenges");
@@ -94,6 +92,7 @@ public class GhostActivity extends ActionBarActivity {
         }
         userTurn = true;
         label.setText(USER_TURN);
+
     }
 
     /**
@@ -115,13 +114,6 @@ public class GhostActivity extends ActionBarActivity {
             computerTurn();
         }
         return true;
-
-        // Game breaks whenever computer starts, doesn't break if I hit restart and computer starts
-        /*TextView text = (TextView) findViewById(R.id.ghostText);
-        text.setText("");
-
-        userTurn = true;
-        return true;*/
     }
 
 

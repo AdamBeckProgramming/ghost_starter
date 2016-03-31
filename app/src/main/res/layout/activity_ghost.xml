@@ -47,7 +47,8 @@
         android:layout_alignTop="@+id/Challenge"
         android:layout_toRightOf="@+id/Challenge"
         android:layout_toEndOf="@+id/Challenge"
-        android:onClick="onStart" />
+        android:onClick="onStart"
+        android:nestedScrollingEnabled="true" />
 
 
 </RelativeLayout>
