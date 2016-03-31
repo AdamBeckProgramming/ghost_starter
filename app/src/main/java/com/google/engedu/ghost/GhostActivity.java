@@ -23,7 +23,6 @@ public class GhostActivity extends ActionBarActivity {
     private boolean userTurn = false;
     private SimpleDictionary simDictionary;
     private Random random = new Random();
-    String totalString = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,29 +65,26 @@ public class GhostActivity extends ActionBarActivity {
     private void computerTurn() {
         TextView label = (TextView) findViewById(R.id.gameStatus);
         TextView text = (TextView) findViewById(R.id.ghostText);
-        text.setText("");
         // Do computer turn stuff then make it the user's turn again
-        String s = text.toString();
+        String s;
         int length = text.length();
         if(length > 4 && simDictionary.isWord(text.getText().toString())){
-            label.setText("Comp wins");
+            label.setText("Comp challenged and won");
+            // comp challenges and should win here
         }else if(length == 0){
-            Log.d("ComputerTurn length 1", s);
-            text.setText("");
-            Log.d("ComputerTurn text 1", text.toString());
             s = simDictionary.getAnyWordStartingWith("");
-            Log.d("ComputerTurn s", s);
-            text.append(s);
-            Log.d("ComputerTurn", text.toString());
-
+            Log.d("Computer found word", ""+s);
+            text.append(s.substring(0));
        }else{
-            s = simDictionary.getAnyWordStartingWith(text.getText().toString());
+            Log.d("Computer turn", "The  computer should actually go now");
+            s = simDictionary.getGoodWordStartingWith(text.getText().toString());
+            Log.d("Computer turn, check s", ""+s);
             if(s == null){
                 label.setText("Computer Challenges");
             }else{
-                text.append(s.substring(length - 1, length));
+                Log.d("text we want to append", text.toString());
+                text.append(s.substring(length, length+1));
             }
-
         }
         userTurn = true;
         label.setText(USER_TURN);
@@ -110,7 +106,7 @@ public class GhostActivity extends ActionBarActivity {
         if (userTurn) {
             label.setText(USER_TURN);
         } else {
-            label.setText(COMPUTER_TURN);
+            label.setText("Computer went first");
             computerTurn();
         }
         return true;
@@ -127,10 +123,10 @@ public class GhostActivity extends ActionBarActivity {
                 TextView label = (TextView) findViewById(R.id.gameStatus);
                 label.setText("Word!");
             }
-            Log.d("Character to add", s);
-            Log.d("Over all string", totalString);
+            Log.d("Character to add", ""+s);
             text.setText(s);
             userTurn = false;
+            computerTurn();
             return true;
         } else{
             userTurn = false;
@@ -147,7 +143,7 @@ public class GhostActivity extends ActionBarActivity {
             Log.d("challengeWord", text.toString());
             String s = simDictionary.getAnyWordStartingWith(text.getText().toString());
             if(s != null){
-                Log.d("challengeWord", s);
+                Log.d("challengeWord", ""+s);
                 label.setText("computer wins");
             }else{
                 label.setText("User was right");

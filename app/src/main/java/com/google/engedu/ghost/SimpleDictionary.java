@@ -34,7 +34,7 @@ public class SimpleDictionary implements GhostDictionary {
         int beginning = 0;
         int ending = words.size()-1;
         Log.d("Get any word", prefix);
-        if((prefix.isEmpty()) || prefix == " " || prefix == ""){
+        if(prefix.isEmpty()){
             Random rand = new Random();
             int randNum = rand.nextInt(words.size());
             Log.d("Get any word", words.get(randNum));
@@ -57,7 +57,7 @@ public class SimpleDictionary implements GhostDictionary {
 
     @Override
     public String getGoodWordStartingWith(String prefix) {
-        return null;
+        return "pedantic";
     }
 
 }
