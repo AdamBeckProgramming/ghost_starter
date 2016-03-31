@@ -21,7 +21,6 @@ public class GhostActivity extends ActionBarActivity {
     private static final String USER_TURN = "Your turn";
     private GhostDictionary dictionary;
     private boolean userTurn = false;
-    private SimpleDictionary simDictionary;
     private Random random = new Random();
 
     @Override
@@ -33,7 +32,7 @@ public class GhostActivity extends ActionBarActivity {
         AssetManager assetManager = getAssets();
         try {
             InputStream inputStream = assetManager.open("words.txt");
-            simDictionary = new SimpleDictionary(inputStream);
+            dictionary = new SimpleDictionary(inputStream);
         } catch (IOException e) {
             Toast toast = Toast.makeText(this, "Could not load dictionary", Toast.LENGTH_LONG);
             toast.show();
@@ -65,29 +64,28 @@ public class GhostActivity extends ActionBarActivity {
     private void computerTurn() {
         TextView label = (TextView) findViewById(R.id.gameStatus);
         TextView text = (TextView) findViewById(R.id.ghostText);
-        // Do computer turn stuff then make it the user's turn again
         String s;
-        int length = text.length();
-        if(length > 4 && simDictionary.isWord(text.getText().toString())){
+        int length = text.getText().length();
+
+        if(length >= dictionary.MIN_WORD_LENGTH && dictionary.isWord(text.getText().toString())){
             label.setText("Comp challenged and won");
             // comp challenges and should win here
         }else if(length == 0){
-            s = simDictionary.getAnyWordStartingWith("");
+            s = dictionary.getAnyWordStartingWith("");
             Log.d("Computer found word", ""+s);
-            text.append(s.substring(0));
+            text.append(s.substring(0,1));
        }else{
-            Log.d("Computer turn", "The  computer should actually go now");
-            s = simDictionary.getGoodWordStartingWith(text.getText().toString());
+            Log.d("Computer turn", text.getText().toString());
+            s = dictionary.getAnyWordStartingWith(text.getText().toString());
             Log.d("Computer turn, check s", ""+s);
             if(s == null){
-                label.setText("Computer Challenges");
+                label.setText("Computer Challenges and wins");
             }else{
-                Log.d("text we want to append", text.toString());
-                text.append(s.substring(length, length+1));
+                text.append(s.substring(length, length + 1));
             }
         }
         userTurn = true;
-        label.setText(USER_TURN);
+        //label.setText(USER_TURN);
 
     }
 
@@ -106,7 +104,7 @@ public class GhostActivity extends ActionBarActivity {
         if (userTurn) {
             label.setText(USER_TURN);
         } else {
-            label.setText("Computer went first");
+            label.setText(COMPUTER_TURN);
             computerTurn();
         }
         return true;
@@ -119,7 +117,7 @@ public class GhostActivity extends ActionBarActivity {
             TextView text = (TextView) findViewById(R.id.ghostText);
             char keyChar = (char) event.getUnicodeChar();
             String s = text.getText().toString() + keyChar;
-            if(simDictionary.isWord(s)) {
+            if(dictionary.isWord(s)) {
                 TextView label = (TextView) findViewById(R.id.gameStatus);
                 label.setText("Word!");
             }
@@ -134,15 +132,14 @@ public class GhostActivity extends ActionBarActivity {
         }
     }
 
-
     public void challengeWord(View view){
         TextView text = (TextView) findViewById(R.id.ghostText);
         TextView label = (TextView) findViewById(R.id.gameStatus);
-        if(text.length() > 4 && simDictionary.isWord(text.getText().toString())){
+        if(text.length() > 4 && dictionary.isWord(text.getText().toString())){
             label.setText("User Wins");
         } else{
             Log.d("challengeWord", text.toString());
-            String s = simDictionary.getAnyWordStartingWith(text.getText().toString());
+            String s = dictionary.getAnyWordStartingWith(text.getText().toString());
             if(s != null){
                 Log.d("challengeWord", ""+s);
                 label.setText("computer wins");

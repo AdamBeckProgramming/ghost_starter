@@ -31,34 +31,31 @@ public class SimpleDictionary implements GhostDictionary {
 
     @Override
     public String getAnyWordStartingWith(String prefix) {
-        int beginning = 0;
-        int ending = words.size()-1;
-        Log.d("Get any word", prefix);
-        if(prefix.isEmpty()){
+        if((prefix.isEmpty())){
             Random rand = new Random();
             int randNum = rand.nextInt(words.size());
-            Log.d("Get any word", words.get(randNum));
             return words.get(randNum);
         }else{
+            int length = prefix.length();
+            int beginning = 0;
+            int ending = words.size()-1;
             while(beginning <= ending){
-                int mid = ((ending-beginning)/2);
-                if(words.get(mid).compareTo(prefix) < 0){
-                    ending = mid - 1;
-                }else if(words.get(mid).compareTo(prefix) > 0){
-                    beginning = mid + 1;
-                }else if(words.get(mid).compareTo(prefix) == 0){
-                    Log.d("Get any word", words.get(mid));
+                int mid = beginning + ((ending-beginning)/2);
+                if(words.get(mid).startsWith(prefix)) {
                     return words.get(mid);
+                }else if(words.get(mid).compareTo(prefix) > 0) {
+                    ending = mid - 1;
+                }else if(words.get(mid).compareTo(prefix) < 0){
+                    beginning = mid + 1;
                 }
             }
         }
         return null;
     }
 
-
     @Override
     public String getGoodWordStartingWith(String prefix) {
-        return "pedantic";
+        return null;
     }
 
 }
