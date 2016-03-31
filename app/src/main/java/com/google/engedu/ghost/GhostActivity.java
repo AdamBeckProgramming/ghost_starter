@@ -134,7 +134,7 @@ public class GhostActivity extends ActionBarActivity {
         }
     }
 
-    
+
     public void challengeWord(View view){
         TextView text = (TextView) findViewById(R.id.ghostText);
         TextView label = (TextView) findViewById(R.id.gameStatus);
